@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+  <title>Miniature Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Miniature Tracker</h1>
+  <form id="add-form">
+    <input type="text" placeholder="Name" id="name" required />
+    <input type="text" placeholder="Game" id="game" required />
+    <select id="status">
+      <option>To Be Printed</option>
+      <option>Printed</option>
+      <option>Primed</option>
+      <option>Painted</option>
+      <option>Based</option>
+      <option>Ready to Game</option>
+    </select>
+    <button type="submit">Add Miniature</button>
+  </form>
+  <div id="gallery"></div>
+  <script src="app.js"></script>
+</body>
+</html>
