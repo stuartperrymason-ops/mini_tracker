@@ -10,8 +10,10 @@ mongoose.connect('mongodb://localhost:27017/miniatures')
 const Miniature = mongoose.model('Miniature', {
   name: String,
   game: String,
-  status: String,
-  army: String
+  army: String,
+  status: String, // e.g. "Unpainted", "Primed", "Painted", "Complete"
+  imageUrl: String, // optional: for gallery view
+  createdAt: { type: Date, default: Date.now }
 });
 
 app.use(cors({
@@ -26,10 +28,21 @@ app.use(cors({
 
 app.use(express.json());
 
+// GET all miniatures
 app.get('/api/miniatures', async (req, res) => {
   const minis = await Miniature.find();
   res.json(minis);
 });
+
+// GET summary stats
+app.get('/api/miniatures/stats', async (req, res) => {
+  const total = await Miniature.countDocuments();
+  const statusCounts = await Miniature.aggregate([
+    { $group: { _id: "$status", count: { $sum: 1 } } }
+  ]);
+  res.json({ total, statusCounts });
+});
+
 
 app.use((req, res, next) => {
   console.log(`➡️ ${req.method} ${req.url}`);

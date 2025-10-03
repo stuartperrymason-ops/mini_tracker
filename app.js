@@ -4,7 +4,10 @@ document.getElementById('add-form').addEventListener('submit', async (e) => {
   const nameInput = document.getElementById('name');
   const gameInput = document.getElementById('game');
   const statusSelect = document.getElementById('status');
+  const armyInput = document.getElementById('army');
+  
 
+  const army = armyInput.value.trim();
   const name = nameInput.value.trim();
   const game = gameInput.value.trim();
   const status = statusSelect.value;
