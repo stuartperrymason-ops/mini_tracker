@@ -21,6 +21,11 @@ app.get('/api/miniatures', async (req, res) => {
   res.json(minis);
 });
 
+app.use((req, res, next) => {
+  console.log(`➡️ ${req.method} ${req.url}`);
+  next();
+});
+
 app.post('/api/miniatures', async (req, res) => {
   try {
     const mini = new Miniature(req.body);
