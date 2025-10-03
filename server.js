@@ -10,7 +10,8 @@ mongoose.connect('mongodb://localhost:27017/miniatures')
 const Miniature = mongoose.model('Miniature', {
   name: String,
   game: String,
-  status: String
+  status: String,
+  army: String
 });
 
 app.use(cors({

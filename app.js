@@ -9,10 +9,10 @@ document.getElementById('add-form').addEventListener('submit', async (e) => {
   const game = gameInput.value.trim();
   const status = statusSelect.value;
 
-  const res = await fetch('/api/miniatures', {
+  const res = await fetch('http://localhost:3000/api/miniatures', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, game, status })
+    body: JSON.stringify({ name, game, status, army })
   });
 
   if (res.ok) {
@@ -20,6 +20,7 @@ document.getElementById('add-form').addEventListener('submit', async (e) => {
     nameInput.value = '';
     gameInput.value = '';
     statusSelect.selectedIndex = 0;
+    armyInput.value = '';
     loadMiniatures();
   } else {
     showMessage('❌ Failed to add miniature. Try again.');
@@ -44,14 +45,14 @@ function showMessage(text) {
 }
 
 async function loadMiniatures() {
-  const res = await fetch('/api/miniatures');
+  const res = await fetch('http://localhost:3000/api/miniatures');
   const data = await res.json();
   const gallery = document.getElementById('gallery');
   gallery.innerHTML = '';
   data.forEach(mini => {
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerHTML = `<strong>${mini.name}</strong><br>${mini.game}<br><em>${mini.status}</em>`;
+    card.innerHTML = `<strong>${mini.name}</strong><br>${mini.game}<br><em>${mini.status}</em><br><em>${mini.army}</em>`;
     gallery.appendChild(card);
   });
 }
