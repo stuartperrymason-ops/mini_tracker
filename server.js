@@ -13,7 +13,16 @@ const Miniature = mongoose.model('Miniature', {
   status: String
 });
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // or whatever your frontend port is
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
+}));
+
+
+
+
+
 app.use(express.json());
 
 app.get('/api/miniatures', async (req, res) => {
