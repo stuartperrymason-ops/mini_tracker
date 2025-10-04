@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
+const mini = new Miniature(req.body);
+
 
 mongoose.connect('mongodb://localhost:27017/miniatures')
 .then(() => console.log('✅ Connected to MongoDB'))
