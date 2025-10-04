@@ -23,9 +23,10 @@ const miniatureSchema = new mongoose.Schema({
   status: { type: String, required: true },
   imageUrl: String,
   createdAt: { type: Date, default: Date.now }
-});
+}, { collection: 'miniatures_v2' }); // 👈 force new collection
 
-const Miniature = mongoose.model('MiniatureV2', miniatureSchema);
+
+const MiniatureV2 = mongoose.model('MiniatureV2', miniatureSchema);
 
 // Middleware
 app.use(cors({ origin: 'http://localhost:3000' }));
