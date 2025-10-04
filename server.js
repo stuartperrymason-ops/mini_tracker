@@ -12,6 +12,10 @@ mongoose.connect('mongodb://localhost:27017/miniatures', {
 .then(() => console.log('✅ Connected to MongoDB'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
+// Delete old Connection
+delete mongoose.connection.models['Miniature'] 
+
+
 // Explicitly set new collection name
 const miniatureSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -20,9 +24,10 @@ const miniatureSchema = new mongoose.Schema({
   status: { type: String, required: true },
   imageUrl: String,
   createdAt: { type: Date, default: Date.now }
-}, { collection: 'miniatures_v2' }); // 👈 NEW collection
+}, { collection: 'miniatures' }); // 👈 NEW collection
 
-const MiniatureV2 = mongoose.model('MiniatureV2', miniatureSchema);
+const Miniature = mongoose.model('Miniature', miniatureSchema);
+console.log('🧬 Active schema fields:', Object.keys(Miniature.schema.paths));
 
 // Middleware
 app.use(cors({ origin: 'http://localhost:3000' }));
@@ -36,13 +41,13 @@ app.use((req, res, next) => {
 
 // Routes
 app.get('/api/miniatures', async (req, res) => {
-  const minis = await MiniatureV2.find();
+  const minis = await Miniature.find();
   res.json(minis);
 });
 
 app.get('/api/miniatures/stats', async (req, res) => {
-  const total = await MiniatureV2.countDocuments();
-  const statusCounts = await MiniatureV2.aggregate([
+  const total = await Miniature.countDocuments();
+  const statusCounts = await Miniature.aggregate([
     { $group: { _id: "$status", count: { $sum: 1 } } }
   ]);
   res.json({ total, statusCounts });
