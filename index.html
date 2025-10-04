@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Miniature Tracker</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Miniature Tracker</h1>
-  <form id="add-form">
-    <input type="text" placeholder="Name" id="name" required />
-    <input type="text" placeholder="Game" id="game" required />
-    <input type="text" placeholder="Army" id="army" required />
-    <select id="status">
-      <option>To Be Printed</option>
-      <option>Printed</option>
-      <option>Primed</option>
-      <option>Painted</option>
-      <option>Based</option>
-      <option>Ready to Game</option>
-    </select>
-    <button type="submit">Add Miniature</button>
-  </form>
-  <div id="gallery"></div>
+  <div class="container">
+    <h1>🎲 Miniature Tracker</h1>
+
+    <form id="add-form">
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="text" id="game" placeholder="Game" required />
+      <input type="text" id="army" placeholder="Army" required />
+      <select id="status" required>
+        <option value="" disabled selected>Status</option>
+        <option value="Unassembled">Unassembled</option>
+        <option value="Primed">Primed</option>
+        <option value="Painted">Painted</option>
+        <option value="Ready to Game">Ready to Game</option>
+      </select>
+      <button type="submit">Add Miniature</button>
+    </form>
+
+    <div id="gallery" class="gallery"></div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
