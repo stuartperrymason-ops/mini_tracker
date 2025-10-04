@@ -55,7 +55,8 @@ app.post('/api/miniatures', async (req, res) => {
   try {
     const { name, game, army, status } = req.body;
     console.log('Incoming data:', req.body); // 👈 Add this
-      
+    body: JSON.stringify({ name, game, army, status })
+  
     const mini = new Miniature({ name, game, army, status });
     await mini.save();
     res.status(201).json(mini);

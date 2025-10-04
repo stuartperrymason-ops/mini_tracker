@@ -16,15 +16,15 @@ document.getElementById('add-form').addEventListener('submit', async (e) => {
   const res = await fetch('http://localhost:3000/api/miniatures', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, game, status, army })
+    body: JSON.stringify({ name, game, army, status  })
   });
 
   if (res.ok) {
     showMessage(`✅ "${name}" added successfully!`);
     nameInput.value = '';
     gameInput.value = '';
+    armyInput.value = ''; 
     statusSelect.selectedIndex = 0;
-    armyInput.value = '';
     loadMiniatures();
   } else {
     showMessage('❌ Failed to add miniature. Try again.');
@@ -56,7 +56,7 @@ async function loadMiniatures() {
   data.forEach(mini => {
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerHTML = `<strong>${mini.name}</strong><br>${mini.game}<br><em>${mini.army}</em><br><em>${mini.status}</em>`;
+    card.innerHTML = `<strong>${mini.name}</strong><br>${mini.game} <br> ${mini.army}<br>  <em>${mini.status}</em>`;
     gallery.appendChild(card);
   });
 }
