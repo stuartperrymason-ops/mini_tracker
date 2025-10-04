@@ -57,11 +57,15 @@ app.post('/api/miniatures', async (req, res) => {
     const mini = new Miniature({ name, game, army, status });
     await mini.save();
     res.status(201).json(mini);
+    console.log('Incoming data:', req.body); // 👈 Add this
   } catch (err) {
     console.error('❌ Error saving miniature:', err);
     res.status(500).json({ error: 'Failed to save miniature' });
   }
 });
+
+
+
 
 
 
