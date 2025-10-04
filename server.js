@@ -51,7 +51,8 @@ app.use((req, res, next) => {
 
 app.post('/api/miniatures', async (req, res) => {
   try {
-    const mini = new Miniature(req.body);
+    const { name, game, army, status } = req.body;
+    const mini = new Miniature({ name, game, army, status });
     await mini.save();
     res.status(201).json(mini);
   } catch (err) {
@@ -59,6 +60,8 @@ app.post('/api/miniatures', async (req, res) => {
     res.status(500).json({ error: 'Failed to save miniature' });
   }
 });
+
+
 
 
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));
