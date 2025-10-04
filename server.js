@@ -12,10 +12,7 @@ mongoose.connect('mongodb://localhost:27017/miniatures', {
 .then(() => console.log('✅ Connected to MongoDB'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Clear model cache (important if schema was changed during dev)
-delete mongoose.connection.models['Miniature'];
-
-// Mongoose schema
+// Explicitly set new collection name
 const miniatureSchema = new mongoose.Schema({
   name: { type: String, required: true },
   game: { type: String, required: true },
@@ -23,8 +20,7 @@ const miniatureSchema = new mongoose.Schema({
   status: { type: String, required: true },
   imageUrl: String,
   createdAt: { type: Date, default: Date.now }
-}, { collection: 'miniatures_v2' }); // 👈 force new collection
-
+}, { collection: 'miniatures_v2' }); // 👈 NEW collection
 
 const MiniatureV2 = mongoose.model('MiniatureV2', miniatureSchema);
 
@@ -40,20 +36,20 @@ app.use((req, res, next) => {
 
 // Routes
 app.get('/api/miniatures', async (req, res) => {
-  const minis = await Miniature.find();
+  const minis = await MiniatureV2.find();
   res.json(minis);
 });
 
 app.get('/api/miniatures/stats', async (req, res) => {
-  const total = await Miniature.countDocuments();
-  const statusCounts = await Miniature.aggregate([
+  const total = await MiniatureV2.countDocuments();
+  const statusCounts = await MiniatureV2.aggregate([
     { $group: { _id: "$status", count: { $sum: 1 } } }
   ]);
   res.json({ total, statusCounts });
 });
 
 app.post('/api/miniatures', async (req, res) => {
-  console.log('📦 Incoming req.body:', req.body);
+  console.log('📦 req.body:', req.body);
   const { name, game, army, status } = req.body;
 
   try {
