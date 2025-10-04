@@ -25,7 +25,7 @@ const miniatureSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const Miniature = mongoose.model('Miniature', miniatureSchema);
+const Miniature = mongoose.model('MiniatureV2', miniatureSchema);
 
 // Middleware
 app.use(cors({ origin: 'http://localhost:3000' }));
@@ -56,7 +56,7 @@ app.post('/api/miniatures', async (req, res) => {
   const { name, game, army, status } = req.body;
 
   try {
-    const mini = await Miniature.create({ name, game, army, status });
+    const mini = await MiniatureV2.create({ name, game, army, status });
     res.status(201).json(mini.toObject());
   } catch (err) {
     console.error('❌ Error saving miniature:', err);
