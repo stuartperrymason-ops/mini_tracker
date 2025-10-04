@@ -18,17 +18,19 @@ const Miniature = mongoose.model('Miniatures', {
   createdAt: { type: Date, default: Date.now }
 });
 
-app.use(cors({
-  origin: 'http://localhost:3000', // or whatever your frontend port is
+
+// Middleware setup
+
+app.use(cors({   origin: 'http://localhost:3000', // or whatever your frontend port is
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));
+app.use(express.json()) // Must be before any routes that use req.body
 
 
 
 
 
-app.use(express.json());
 
 // GET all miniatures
 app.get('/api/miniatures', async (req, res) => {
@@ -53,18 +55,12 @@ app.use((req, res, next) => {
 
 app.post('/api/miniatures', async (req, res) => {
     console.log('📦 Incoming data:', req.body); // 👈 Add this
-
-
-    try {
+    
     const { name, game, army, status } = req.body;
     const mini = new Miniature({ name, game, army, status });
     await mini.save();
     res.status(201).json(mini);
-  } catch (err) {
-    console.error('❌ Error saving miniature:', err);
-    res.status(500).json({ error: 'Failed to save miniature' });
-  }
-});
+  });
 
 
 
