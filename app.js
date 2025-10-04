@@ -7,9 +7,10 @@ document.getElementById('add-form').addEventListener('submit', async (e) => {
   const armyInput = document.getElementById('army');
   
 
-  const army = armyInput.value.trim();
+  
   const name = nameInput.value.trim();
   const game = gameInput.value.trim();
+  const army = armyInput.value.trim();
   const status = statusSelect.value;
 
   const res = await fetch('http://localhost:3000/api/miniatures', {
@@ -55,7 +56,7 @@ async function loadMiniatures() {
   data.forEach(mini => {
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerHTML = `<strong>${mini.name}</strong><br>${mini.game}<br><em>${mini.status}</em><br><em>${mini.army}</em>`;
+    card.innerHTML = `<strong>${mini.name}</strong><br>${mini.game}<br><em>${mini.army}</em><br><em>${mini.status}</em>`;
     gallery.appendChild(card);
   });
 }

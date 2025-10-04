@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
-const mini = new Miniature(req.body);
+
 
 
 mongoose.connect('mongodb://localhost:27017/miniatures')
@@ -54,10 +54,11 @@ app.use((req, res, next) => {
 app.post('/api/miniatures', async (req, res) => {
   try {
     const { name, game, army, status } = req.body;
+    console.log('Incoming data:', req.body); // 👈 Add this
+      
     const mini = new Miniature({ name, game, army, status });
     await mini.save();
     res.status(201).json(mini);
-    console.log('Incoming data:', req.body); // 👈 Add this
   } catch (err) {
     console.error('❌ Error saving miniature:', err);
     res.status(500).json({ error: 'Failed to save miniature' });
