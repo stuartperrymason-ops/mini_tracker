@@ -12,39 +12,53 @@ mongoose.connect('mongodb://localhost:27017/miniatures', {
 .then(() => console.log('✅ Connected to MongoDB'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Delete old Connection
-delete mongoose.connection.models['Miniature'] 
+// 🔄 Clear model cache to force schema reload
+delete mongoose.connection.models['Miniature'];
 
-
-// Explicitly set new collection name
+// ✅ Define schema with all fields
 const miniatureSchema = new mongoose.Schema({
   name: { type: String, required: true },
   game: { type: String, required: true },
   army: { type: String, required: true },
   status: { type: String, required: true },
-  imageUrl: String,
+  imageUrl: { type: String, default: "" },
   createdAt: { type: Date, default: Date.now }
-}, { collection: 'miniatures' }); // 👈 NEW collection
+}, { collection: 'miniatures' }); // 👈 Explicit collection name
 
 const Miniature = mongoose.model('Miniature', miniatureSchema);
-console.log('🧬 Active schema fields:', Object.keys(Miniature.schema.paths));
 
-// Middleware
+// 🔧 Middleware
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
 
-// Logging
+// 🧭 Logging
 app.use((req, res, next) => {
   console.log(`➡️ ${req.method} ${req.url}`);
   next();
 });
 
-// Routes
+// 📥 POST: Add a new miniature
+app.post('/api/miniatures', async (req, res) => {
+  console.log('📦 Incoming req.body:', req.body);
+  const { name, game, army, status } = req.body;
+
+  try {
+    const mini = await Miniature.create({ name, game, army, status });
+    console.log('✅ Saved miniature:', mini);
+    res.status(201).json(mini.toObject());
+  } catch (err) {
+    console.error('❌ Error saving miniature:', err);
+    res.status(400).json({ error: 'Invalid data or missing fields' });
+  }
+});
+
+// 📤 GET: All miniatures
 app.get('/api/miniatures', async (req, res) => {
   const minis = await Miniature.find();
   res.json(minis);
 });
 
+// 📊 GET: Stats summary
 app.get('/api/miniatures/stats', async (req, res) => {
   const total = await Miniature.countDocuments();
   const statusCounts = await Miniature.aggregate([
@@ -53,18 +67,5 @@ app.get('/api/miniatures/stats', async (req, res) => {
   res.json({ total, statusCounts });
 });
 
-app.post('/api/miniatures', async (req, res) => {
-  console.log('📦 req.body:', req.body);
-  const { name, game, army, status } = req.body;
-
-  try {
-    const mini = await MiniatureV2.create({ name, game, army, status });
-    res.status(201).json(mini.toObject());
-  } catch (err) {
-    console.error('❌ Error saving miniature:', err);
-    res.status(400).json({ error: 'Invalid data or missing fields' });
-  }
-});
-
-// Start server
-app.listen(3000, () => console.log('🚀 Server running on http://localhost:3000'));
+// 🚀 Start server
+app.listen(3000, () => console.log('🌍 Server running on http://localhost:3000'));
