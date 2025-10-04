@@ -9,7 +9,7 @@ mongoose.connect('mongodb://localhost:27017/miniatures')
 .then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
-const Miniature = mongoose.model('Miniature', {
+const Miniature = mongoose.model('Miniatures', {
   name: String,
   game: String,
   army: String,
@@ -54,9 +54,6 @@ app.use((req, res, next) => {
 app.post('/api/miniatures', async (req, res) => {
   try {
     const { name, game, army, status } = req.body;
-    console.log('Incoming data:', req.body); // 👈 Add this
-    body: JSON.stringify({ name, game, army, status })
-  
     const mini = new Miniature({ name, game, army, status });
     await mini.save();
     res.status(201).json(mini);
@@ -65,6 +62,7 @@ app.post('/api/miniatures', async (req, res) => {
     res.status(500).json({ error: 'Failed to save miniature' });
   }
 });
+
 
 
 
