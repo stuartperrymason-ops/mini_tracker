@@ -1,40 +1,38 @@
 
+document.getElementById('add-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('add-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  const nameInput = document.getElementById('name');
+  const gameInput = document.getElementById('game');
+  const armyInput = document.getElementById('army');
+  const statusSelect = document.getElementById('status');
+  
 
-    const nameInput = document.getElementById('name');
-    const gameInput = document.getElementById('game');
-    const armyInput = document.getElementById('army');
-    const statusSelect = document.getElementById('status');
+  
+  const name = nameInput.value.trim();
+  const game = gameInput.value.trim();
+  const army = armyInput.value.trim();
+  const status = statusSelect.value;
 
-    const name = nameInput.value.trim();
-    const game = gameInput.value.trim();
-    const army = armyInput.value.trim();
-    const status = statusSelect.value;
+  console.log({ name, game, army, status }); // 👈 Add this
 
-    console.log({ name, game, army, status }); // ✅ Confirm values
-
-    const res = await fetch('http://localhost:3000/api/miniatures', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, game, army, status })
-    });
-
-    if (res.ok) {
-      showMessage(`✅ "${name}" added successfully!`);
-      nameInput.value = '';
-      gameInput.value = '';
-      armyInput.value = '';
-      statusSelect.selectedIndex = 0;
-      loadMiniatures();
-    } else {
-      showMessage('❌ Failed to add miniature. Try again.');
-    }
+  const res = await fetch('http://localhost:3000/api/miniatures', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, game, army, status  })
   });
 
-
+  if (res.ok) {
+    showMessage(`✅ "${name}" added successfully!`);
+    nameInput.value = '';
+    gameInput.value = '';
+    armyInput.value = ''; 
+    statusSelect.selectedIndex = 0;
+    loadMiniatures();
+  } else {
+    showMessage('❌ Failed to add miniature. Try again.');
+  }
+});
 
 function showMessage(text) {
   let msg = document.getElementById('message');
@@ -66,4 +64,4 @@ async function loadMiniatures() {
   });
 }
 
-loadMiniatures();});
+loadMiniatures();
