@@ -25,11 +25,7 @@ app.post('/api/figures', async (req, res) => {
   }
 });
 
-// GET: All figures
-app.get('/api/figures', async (req, res) => {
-  const figs = await Figure.find();
-  res.json(figs);
-});
+
 
 // PUT: Update status
 app.put('/api/figures/:id/status', async (req, res) => {
@@ -45,5 +41,15 @@ app.put('/api/figures/:id/status', async (req, res) => {
   }
 });
 
+// GET: All figures
+app.get('/api/figures', async (req, res) => {
+  const figs = await Figure.find();
+  res.json(figs);
+});
+
 // Start server
 app.listen(3000, () => console.log('🌍 Server running on http://localhost:3000'));
+
+app.use((req, res) => {
+  res.status(404).send(`❌ Route not found: ${req.method} ${req.url}`);
+});
