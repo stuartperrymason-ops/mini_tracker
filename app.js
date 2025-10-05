@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('🚀 Submitting:', { name, game, army, status });
 
-    const res = await fetch('http://localhost:3000/api/miniatures', {
+    const res = await fetch('http://localhost:3000/api/figures', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, game, army, status })
@@ -29,24 +29,24 @@ document.addEventListener('DOMContentLoaded', () => {
       gameInput.value = '';
       armyInput.value = '';
       statusSelect.selectedIndex = 0;
-      loadMiniatures();
+      loadFigures();
     } else {
-      showMessage('❌ Failed to add miniature. Check all fields.');
+      showMessage('❌ Failed to add figure. Check all fields.');
     }
   });
 
-  async function loadMiniatures() {
-    const res = await fetch('http://localhost:3000/api/miniatures');
+  async function loadFigures() {
+    const res = await fetch('http://localhost:3000/api/figures');
     const data = await res.json();
     gallery.innerHTML = '';
-    data.forEach(mini => {
+    data.forEach(fig => {
       const card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = `
-        <strong>${mini.name}</strong><br>
-        ${mini.game} <br>
-        ${mini.army}<br>
-        <em>${mini.status}</em>
+        <strong>${fig.name}</strong><br>
+        ${fig.game} <br>
+        ${fig.army}<br>
+        <em>${fig.status}</em>
       `;
       gallery.appendChild(card);
     });
@@ -69,5 +69,5 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => msg.remove(), 3000);
   }
 
-  loadMiniatures();
+  loadFigures();
 });
