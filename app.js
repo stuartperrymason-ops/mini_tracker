@@ -46,6 +46,7 @@ async function loadDashboard() {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
+      <input type="checkbox" class="batch-check" data-id="${fig._id}">
       <strong>${fig.name}</strong><br>
       ${fig.modelCount} models<br>
       ${fig.army} (${fig.gameSystem})<br>
@@ -96,5 +97,30 @@ async function loadDashboard() {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadDashboard();
+
   document.getElementById('applyFilter').addEventListener('click', loadDashboard);
+
+  document.getElementById('applyBatch').addEventListener('click', async () => {
+    const selected = Array.from(document.querySelectorAll('.batch-check:checked'))
+      .map(cb => cb.dataset.id);
+
+    const status = document.getElementById('batchStatus').value;
+    const fileUrl = document.getElementById('batchFile').value;
+
+    if (selected.length === 0) return alert('Select at least one model');
+
+    await fetch('http://localhost:3000/api/figures/batch', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids: selected, status, fileUrl })
+    });
+
+document.getElementById('exportCSV').addEventListener('click', () => {
+  window.open('http://localhost:3000/api/figures/export');
+});
+
+
+
+    loadDashboard(); // Refresh
+  });
 });

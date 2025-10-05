@@ -75,6 +75,33 @@ app.get('/api/figures/stats', async (req, res) => {
     res.status(500).json({ error: 'Failed to generate stats' });
   }
 });
+// GET: Export figures as CSV
+const { Parser } = require('json2csv');
+
+app.get('/api/figures/export', async (req, res) => {
+  const figures = await Figure.find().lean();
+
+  const fields = [
+    'name',
+    'modelCount',
+    'army',
+    'gameSystem',
+    'status',
+    'fileUrl',
+    'createdAt'
+  ];
+
+  const parser = new Parser({ fields });
+  const csv = parser.parse(figures);
+
+  res.header('Content-Type', 'text/csv');
+  res.attachment('miniatures.csv');
+  res.send(csv);
+});
+
+
+
+
 // PUT: Update fileUrl
 app.put('/api/figures/:id/file', async (req, res) => {
   try {
@@ -89,6 +116,24 @@ app.put('/api/figures/:id/file', async (req, res) => {
   }
 });
 
+// PUT: Batch update status and/or fileUrl
+app.put('/api/figures/batch', async (req, res) => {
+  const { ids, status, fileUrl } = req.body;
+
+  const update = {};
+  if (status) update.status = status;
+  if (fileUrl) update.fileUrl = fileUrl;
+
+  try {
+    const result = await Figure.updateMany(
+      { _id: { $in: ids } },
+      { $set: update }
+    );
+    res.json({ updated: result.modifiedCount });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 
 
 
