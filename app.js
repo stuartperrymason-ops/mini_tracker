@@ -67,8 +67,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
  // 
 async function loadStats() {
+ console.log('📊 Fetching stats...');
+
   const res = await fetch('http://localhost:3000/api/figures/stats');
   const stats = await res.json();
+console.log('📊 Stats:', stats);
 
   const statsDiv = document.createElement('div');
   statsDiv.className = 'stats';
@@ -88,5 +91,11 @@ async function loadStats() {
 
 
 
-  loadDashboard(await loadStats());
+async function loadDashboard() {
+  await loadStats(); // ✅ This must be here
+  // ... then load model cards
+}
+
+loadDashboard();
+
 });
