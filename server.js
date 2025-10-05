@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -25,7 +24,16 @@ app.post('/api/figures', async (req, res) => {
   }
 });
 
+// GET: All figures with optional filters
+app.get('/api/figures', async (req, res) => {
+  const { gameSystem, army } = req.query;
+  const filter = {};
+  if (gameSystem) filter.gameSystem = gameSystem;
+  if (army) filter.army = army;
 
+  const figs = await Figure.find(filter);
+  res.json(figs);
+});
 
 // PUT: Update status
 app.put('/api/figures/:id/status', async (req, res) => {
@@ -41,14 +49,7 @@ app.put('/api/figures/:id/status', async (req, res) => {
   }
 });
 
-// GET: All figures
-app.get('/api/figures', async (req, res) => {
-  const figs = await Figure.find();
-  res.json(figs);
-});
-
-
-// GET: Stats
+// GET: Status breakdown
 app.get('/api/figures/stats', async (req, res) => {
   try {
     const statusGroups = await Figure.aggregate([
@@ -74,12 +75,19 @@ app.get('/api/figures/stats', async (req, res) => {
     res.status(500).json({ error: 'Failed to generate stats' });
   }
 });
-
-
-
-
-
-
+// PUT: Update fileUrl
+app.put('/api/figures/:id/file', async (req, res) => {
+  try {
+    const fig = await Figure.findByIdAndUpdate(
+      req.params.id,
+      { fileUrl: req.body.fileUrl },
+      { new: true }
+    );
+    res.json(fig);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 
 
 

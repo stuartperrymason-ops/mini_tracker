@@ -33,6 +33,7 @@ const figureSchema = new mongoose.Schema({
     ],
     required: true
   },
+  fileUrl: { type: String }, // optional image or STL link
   createdAt: { type: Date, default: Date.now }
 }, { collection: 'figures' });
 
