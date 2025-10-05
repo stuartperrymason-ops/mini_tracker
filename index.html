@@ -1,31 +1,50 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Miniature Tracker</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>🎲 Miniature Tracker</h1>
+  <h1>🧙‍♂️ Miniature Tracker</h1>
 
+  <section>
+    <h2>Add New Model</h2>
     <form id="add-form">
-      <input type="text" id="name" placeholder="Name" required />
-      <input type="text" id="game" placeholder="Game" required />
-      <input type="text" id="army" placeholder="Army" required />
-      <select id="status" required>
-        <option value="" disabled selected>Status</option>
-        <option value="Unassembled">Unassembled</option>
-        <option value="Primed">Primed</option>
-        <option value="Painted">Painted</option>
-        <option value="Ready to Game">Ready to Game</option>
+      <input type="text" id="name" placeholder="Model Name" required>
+      <input type="number" id="modelCount" placeholder="Model Count" required>
+      <input type="text" id="army" placeholder="Army" required>
+      <select id="gameSystem" required>
+        <option disabled selected>Select Game System</option>
+        <option>Marvel Crisis Protocol</option>
+        <option>Star Wars Legion</option>
+        <option>Star Wars Shatterpoint</option>
+        <option>Middle Earth Strategy Battle</option>
+        <option>Warhammer Old world</option>
+        <option>Battletech</option>
+        <option>WH40k</option>
+        <option>Age of Sigmar</option>
+        <option>Conquest Last Argument of Kings</option>
+        <option>Dune</option>
       </select>
-      <button type="submit">Add Miniature</button>
+      <select id="status" required>
+        <option disabled selected>Select Status</option>
+        <option>STL file found</option>
+        <option>Printed</option>
+        <option>Primed</option>
+        <option>Painted</option>
+        <option>Based</option>
+        <option>Ready for game</option>
+      </select>
+      <button type="submit">Add Model</button>
     </form>
+  </section>
 
-    <div id="gallery" class="gallery"></div>
-  </div>
+  <section>
+    <h2>Dashboard</h2>
+    <div id="dashboard"></div>
+  </section>
 
   <script src="app.js"></script>
 </body>
