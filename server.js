@@ -72,3 +72,9 @@ app.get('/api/figures/stats', async (req, res) => {
 
 // 🚀 Start server
 app.listen(3000, () => console.log('🌍 Server running on http://localhost:3000'));
+
+
+app.get('/test', (req, res) => {
+  res.send('✅ Test route working');
+});
+
