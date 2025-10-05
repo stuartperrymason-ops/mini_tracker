@@ -47,6 +47,31 @@ app.get('/api/figures', async (req, res) => {
   res.json(figs);
 });
 
+
+
+app.get('/api/figures/stats', async (req, res) => {
+  const statusGroups = await Figure.aggregate([
+    { $match: { status: { $in: ['Printed', 'Primed', 'Painted', 'Ready for game'] } } },
+    { $group: { _id: "$status", count: { $sum: 1 } } }
+  ]);
+
+  // Convert to lookup object
+  const counts = statusGroups.reduce((acc, group) => {
+    acc[group._id] = group.count;
+    return acc;
+  }, {});
+
+  res.json({
+    printed: counts['Printed'] || 0,
+    primed: counts['Primed'] || 0,
+    painted: counts['Painted'] || 0,
+    ready: counts['Ready for game'] || 0
+  });
+});
+
+
+
+
 // Start server
 app.listen(3000, () => console.log('🌍 Server running on http://localhost:3000'));
 

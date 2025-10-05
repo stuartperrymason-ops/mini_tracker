@@ -1,5 +1,5 @@
 // app.js
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('add-form');
   const dashboard = document.getElementById('dashboard');
 
@@ -64,5 +64,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  loadDashboard();
+
+ // 
+async function loadStats() {
+  const res = await fetch('http://localhost:3000/api/figures/stats');
+  const stats = await res.json();
+
+  const statsDiv = document.createElement('div');
+  statsDiv.className = 'stats';
+  statsDiv.innerHTML = `
+    <h3>Status Breakdown</h3>
+    <ul>
+      <li><strong>Printed:</strong> ${stats.printed}</li>
+      <li><strong>Primed:</strong> ${stats.primed}</li>
+      <li><strong>Painted:</strong> ${stats.painted}</li>
+      <li><strong>Ready to Game:</strong> ${stats.ready}</li>
+    </ul>
+  `;
+
+  dashboard.prepend(statsDiv);
+}
+
+
+
+
+  loadDashboard(await loadStats());
 });
