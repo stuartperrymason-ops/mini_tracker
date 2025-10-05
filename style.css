@@ -14,16 +14,31 @@ form, .card {
   margin-top: 0.5em;
 }
 .stats {
-  background: #e0f7fa;
+  background: #f0f8ff;
   padding: 1em;
   margin-bottom: 1em;
-  border-left: 5px solid #00796b;
+  border-left: 5px solid #2196f3;
 }
-.stats ul {
-  list-style: none;
-  padding: 0;
+.bar-group {
+  margin: 1em 0;
 }
-.stats li {
-  margin: 0.5em 0;
+.bar {
+  display: flex;
+  height: 30px;
+  background: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
 }
+.bar div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9em;
+  padding: 0 5px;
+}
+.printed { background: #ff9800; }
+.primed { background: #9e9e9e; }
+.painted { background: #4caf50; }
+.ready { background: #3f51b5; }
 

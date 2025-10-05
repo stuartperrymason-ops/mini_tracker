@@ -48,26 +48,38 @@ app.get('/api/figures', async (req, res) => {
 });
 
 
-
+// GET: Stats
 app.get('/api/figures/stats', async (req, res) => {
-  const statusGroups = await Figure.aggregate([
-    { $match: { status: { $in: ['Printed', 'Primed', 'Painted', 'Ready for game'] } } },
-    { $group: { _id: "$status", count: { $sum: 1 } } }
-  ]);
+  try {
+    const statusGroups = await Figure.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]);
 
-  // Convert to lookup object
-  const counts = statusGroups.reduce((acc, group) => {
-    acc[group._id] = group.count;
-    return acc;
-  }, {});
+    const total = await Figure.countDocuments();
 
-  res.json({
-    printed: counts['Printed'] || 0,
-    primed: counts['Primed'] || 0,
-    painted: counts['Painted'] || 0,
-    ready: counts['Ready for game'] || 0
-  });
+    const counts = statusGroups.reduce((acc, group) => {
+      acc[group._id] = group.count;
+      return acc;
+    }, {});
+
+    res.json({
+      total,
+      printed: counts['Printed'] || 0,
+      primed: counts['Primed'] || 0,
+      painted: counts['Painted'] || 0,
+      ready: counts['Ready for game'] || 0
+    });
+  } catch (err) {
+    console.error('❌ Error in stats route:', err);
+    res.status(500).json({ error: 'Failed to generate stats' });
+  }
 });
+
+
+
+
+
+
 
 
 

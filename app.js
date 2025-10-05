@@ -65,24 +65,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
 
- // 
-async function loadStats() {
- console.log('📊 Fetching stats...');
+ // Load stats and display
 
+async function loadStats() {
   const res = await fetch('http://localhost:3000/api/figures/stats');
   const stats = await res.json();
-console.log('📊 Stats:', stats);
 
   const statsDiv = document.createElement('div');
   statsDiv.className = 'stats';
   statsDiv.innerHTML = `
     <h3>Status Breakdown</h3>
-    <ul>
-      <li><strong>Printed:</strong> ${stats.printed}</li>
-      <li><strong>Primed:</strong> ${stats.primed}</li>
-      <li><strong>Painted:</strong> ${stats.painted}</li>
-      <li><strong>Ready to Game:</strong> ${stats.ready}</li>
-    </ul>
+    <div class="bar-group">
+      <label>Printed vs Primed</label>
+      <div class="bar">
+        <div class="printed" style="width:${(stats.printed / stats.total) * 100}%">Printed (${stats.printed})</div>
+        <div class="primed" style="width:${(stats.primed / stats.total) * 100}%">Primed (${stats.primed})</div>
+      </div>
+    </div>
+    <div class="bar-group">
+      <label>Painted vs Ready</label>
+      <div class="bar">
+        <div class="painted" style="width:${(stats.painted / stats.total) * 100}%">Painted (${stats.painted})</div>
+        <div class="ready" style="width:${(stats.ready / stats.total) * 100}%">Ready (${stats.ready})</div>
+      </div>
+    </div>
   `;
 
   dashboard.prepend(statsDiv);
